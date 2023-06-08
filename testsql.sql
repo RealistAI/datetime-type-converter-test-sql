@@ -1,1 +1,1 @@
-SELECT id, CURRENT_TIMESTAMP FROM why.isthis.sopainful;
+SELECT id, TIMESTAMP FROM why.isthis.sopainful;
