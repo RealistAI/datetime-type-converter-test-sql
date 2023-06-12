@@ -1,0 +1,10 @@
+#!/bin/sh -ex
+
+BASE_DIR=$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>&1 > /dev/null && cd .. && pwd)
+BIN="${BASE_DIR}/dumper/app/build/install/app/bin/dwh-migration-dumper"
+
+if [ ! -x "$BIN" ] ; then
+  (cd "${BASE_DIR}" && ./gradlew --parallel :dumper:app:installDist)
+fi
+
+exec "$BIN" "$@"
