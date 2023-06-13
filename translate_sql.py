@@ -226,7 +226,7 @@ def validate_sqls(client: bigquery.Client, uc4_jobs: list[str],
         result, message  = utils.submit_dry_run(client=client,
                                                 query=query)
 
-        if result == 'SUCCEEEDED':
+        if result == 'SUCCEEDED':
             logger.info(f"dry-run for {uc4_job} succeeded")
         else:
             logger.warning(f"dry-run for {uc4_job} failed.")
@@ -302,9 +302,11 @@ def main():
                     "exist."
 
             # Copy the SQL to the input folder
+            date_converter_path = Path(config.DATE_CONVERTER)
             dest_path = Path(config.BQMS_INPUT_FOLDER, sql)
             dest_path.parents[0].mkdir(parents=True, exist_ok=True)
             shutil.copy(source_path, dest_path.parents[0])
+            shutil.copy(date_converter_path, desk_path.parents[0])
             logger.info(f"  Copied {source_path} to '{config.BQMS_INPUT_FOLDER}'") 
 
             # We want to add the unchaged SQL path to the list

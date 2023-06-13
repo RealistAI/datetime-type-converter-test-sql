@@ -1,4 +1,4 @@
-type: experimental_object_rewriter
+type: object_rewriter
 global:
   typeConvert:
     timestamp:

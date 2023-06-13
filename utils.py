@@ -177,6 +177,6 @@ def submit_dry_run(client: bigquery.Client, query: str) -> Tuple[str, str]:
     except BadRequest as e:
         return 'FAILED', e.message
 
-    return 'SUCEEDED', ''
+    return 'SUCCEEDED', ''
 
 

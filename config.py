@@ -85,7 +85,7 @@ BQMS_OBJECT_MAPPING_FILE = Path(BQMS_CONFIG_FOLDER , "object_mapping.json")
 # is the root directory where the script will look.
 # NOTE: The SQL references in the UC4 jobs have the rest of the file path
 SOURCE_SQL_PATH = Path(BASE_PATH, UC4_SQL_REPO_NAME, "teradata_sql")
-
+DATETYPE_CONVERTER = Path(Path.cwd(), "input_csvs", "type-convert.config.yaml")
 # After successful translaiton and dry-run, the Translate SQL script will copy
 # the SQL files back to this directory.
 TARGET_SQL_PATH = Path(BASE_PATH, UC4_SQL_REPO_NAME, "bigquery_sql")
