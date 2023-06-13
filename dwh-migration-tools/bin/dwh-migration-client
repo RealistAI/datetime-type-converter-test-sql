@@ -1,0 +1,3 @@
+#!/bin/sh -ex
+
+exec python $(dirname $0)/../client/bqms_run/main.py "$@"
