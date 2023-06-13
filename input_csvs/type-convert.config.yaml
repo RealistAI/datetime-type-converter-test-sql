@@ -1,6 +1,0 @@
-type: object_rewriter
-global:
-  typeConvert:
-    timestamp:
-      target: DATETIME
-      timezone: America/Las_Angeles
