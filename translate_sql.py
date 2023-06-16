@@ -3,12 +3,15 @@ import os
 import shutil
 from typing import Tuple
 import uuid
+import argparse
+import parser
 
 import config
 import utils
 import json
 from pathlib import Path
 from google.cloud import bigquery
+import type_converter
 
 logging.basicConfig(level=config.LOGGING_LEVEL)
 logger = logging.getLogger(__name__)
@@ -92,26 +95,7 @@ def validate_sqls(client: bigquery.Client, uc4_jobs: list[str],
     pass
 
 
-def generate_timestamp_to_datetime_config(timezone: str):
-    """
-    Generate the config required to convert all timestamps to datetime 
-    """
-    # We are going to build the config and write it to the input folder 
-    config_file_name = "timestamp-to-datetime.config.yaml"
-    config_lines = []
-    config_lines.append("type: experimental_object_rewriter")
-    config_lines.append("global:")
-    config_lines.append("  typeConvert:")
-    config_lines.append("    timestamp:")
-    config_lines.append("      target: DATETIME")
-    config_lines.append(f"      timezone: {timezone}")
-
-    with open(Path(config.BQMS_INPUT_FOLDER, config_file_name), 'w+') \
-            as config_file:
-        config_file.write('\n'.join(config_lines))
-
-
-def main(timestamp_to_datetime:bool=True):
+def main():
     """
 
     """
@@ -127,10 +111,15 @@ def main(timestamp_to_datetime:bool=True):
     generate_object_mapping()
     # Generate the BQMS config.yaml file
     generate_bqms_config()
+    
+    args_dict = parser.arg_parser()
 
-    if timestamp_to_datetime:
-        generate_timestamp_to_datetime_config('America/Phoenix')
-
+    for key, value in args_dict.items():
+        if key in "timestamp_to_datetime" and value is True:
+            type_converter.generate_timestamp_to_datetime_config('America/Phoenix')
+        if key in "lowercase_to_uppercase" and value is True:
+            type_converter.generate_lowercase_to_uppercase_config() 
+ 
     shutil.copy(config.SQL_TO_TRANSLATE, Path(config.BQMS_INPUT_FOLDER, 'test.sql'))
     # Submit the job to the BQMS
     submit_job_to_bqms()

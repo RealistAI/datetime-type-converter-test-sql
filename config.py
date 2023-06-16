@@ -44,5 +44,5 @@ BQMS_OBJECT_MAPPING_FILE = Path(BQMS_CONFIG_FOLDER , "object_mapping.json")
 
 
 DATETYPE_CONVERTER = Path(Path.cwd(), "template_configs", "timestamp-to-datetime.config.yaml")
-
+CASETYPE_CONVERTER = Path(Path.cwd(), "template_configs", "lowercase-to-uppercase.config.yaml")
 SQL_TO_TRANSLATE = Path(Path.cwd(), 'translate.sql')
