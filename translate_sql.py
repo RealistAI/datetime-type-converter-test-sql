@@ -5,6 +5,7 @@ from typing import Tuple
 import uuid
 import argparse
 import parser
+import csv
 
 import config
 import utils
@@ -58,14 +59,57 @@ def generate_bqms_config():
         config_file.truncate(0)
         config_file.write('\n'.join(lines))
 
-
+        
 def generate_object_mapping():
     """
     Pull the mappings from the Teradata to BigQuery Mapping table in BigQuery
     and build the corresponding Object Mapping.
     """
-    with open(config.BQMS_OBJECT_MAPPING_FILE, 'w+') as file:
-        file.write('{}')
+
+    object_map = {
+    }
+    name_map = []
+
+    # Get the records from the mapping table
+    with open(config.OBJECT_CSV_FILE, 'r') as object_csv:
+        data = csv.DictReader(object_csv)
+        data_dict = {}
+        for rows in data:
+            row = rows
+            data_dict.update(row)
+        
+        print("MATTHIAS ------------------------------------------>", data_dict)
+        teradata_table = data_dict.get("teradata_tablename")
+		
+        teradata_dataset = data_dict.get("teradata_dataset")
+
+        bigquery_table = data_dict.get("bq_tablename")
+
+        bigquery_dataset = data_dict.get("bq_dataset")
+				
+        name_map.append(
+                {
+                    "source": {
+                        "type": "RELATION",
+                        "database": config.BQMS_DEFAULT_DATABASE,
+                        "schema": teradata_dataset,
+                        "relation": teradata_table
+                    },
+                    "target": {
+                        "database": config.BQMS_DEFAULT_DATABASE,
+                        "schema": bigquery_dataset,
+                        "relation": bigquery_table
+                    }
+    
+                }
+            )
+        object_csv.close()
+
+    object_map["name_map"] = name_map
+
+    # Write the config file to disk
+    with open(config.BQMS_OBJECT_MAPPING_FILE, 'w+') as mapping_file:
+        mapping_file.write(json.dumps(object_map, indent=4))
 
 
 def submit_job_to_bqms():
