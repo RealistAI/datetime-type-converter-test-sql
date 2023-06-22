@@ -1,2 +1,2 @@
-"teradata_dataset","teradata_tablename","bq_dataset","bq_tablename"
-"td_test_dataset","td_test_table","bq_test_dataset","bq_test_table"
+td_test_table_a,td_test_dataset_a,bq_test_table_a,bq_test_dataset_a
+td_test_table_b,td_test_dataset_b,bq_test_table_b,bq_test_dataset_b

@@ -72,36 +72,39 @@ def generate_object_mapping():
 
     # Get the records from the mapping table
     with open(config.OBJECT_CSV_FILE, 'r') as object_csv:
-        data = csv.DictReader(object_csv)
-        data_dict = {}
-        for rows in data:
-            row = rows
-            data_dict.update(row)
+        data = object_csv.readlines()
+        for line in data:
+            data_dict = {}
+            line_list = line.split(',')
+            key = 0
+            for i in line_list:
+                data_dict.update({key: i})
+                key += 1
         
-        teradata_table = data_dict.get("teradata_tablename")
+            teradata_table = data_dict.get(0)
 		
-        teradata_dataset = data_dict.get("teradata_dataset")
+            teradata_dataset = data_dict.get(1)
 
-        bigquery_table = data_dict.get("bq_tablename")
+            bigquery_table = data_dict.get(2)
 
-        bigquery_dataset = data_dict.get("bq_dataset")
+            bigquery_dataset = data_dict.get(3)
 				
-        name_map.append(
-                {
-                    "source": {
-                        "type": "RELATION",
-                        "database": config.BQMS_DEFAULT_DATABASE,
-                        "schema": teradata_dataset,
-                        "relation": teradata_table
-                    },
-                    "target": {
-                        "database": config.BQMS_DEFAULT_DATABASE,
-                        "schema": bigquery_dataset,
-                        "relation": bigquery_table
+            name_map.append(
+                    {
+                        "source": {
+                            "type": "RELATION",
+                            "database": config.BQMS_DEFAULT_DATABASE,
+                            "schema": teradata_dataset,
+                            "relation": teradata_table
+                        },
+                        "target": {
+                            "database": config.BQMS_DEFAULT_DATABASE,
+                            "schema": bigquery_dataset,
+                            "relation": bigquery_table
+                        }
+        
                     }
-    
-                }
-            )
+                )
         object_csv.close()
 
     object_map["name_map"] = name_map
