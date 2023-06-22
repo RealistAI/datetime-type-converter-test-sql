@@ -78,7 +78,6 @@ def generate_object_mapping():
             row = rows
             data_dict.update(row)
         
-        print("MATTHIAS ------------------------------------------>", data_dict)
         teradata_table = data_dict.get("teradata_tablename")
 		
         teradata_dataset = data_dict.get("teradata_dataset")
