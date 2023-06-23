@@ -61,10 +61,10 @@ and push the new branch with its changes to the repository stored in github. <br
 
 ## Usage
 In order to utilize this tool, you first need to clone the project into the directory of your choice 
-`git clone https://github.com/RealistAI/bq_migration_automation_tool.git`, navigate into the newly cloned 
-directory `cd bq_migration_automation_tool`, and alter the config.py to your own specification. Create 
+`git clone https://github.com/RealistAI/datetime-type-converter-test-sql.git`, navigate into the newly cloned 
+directory `cd datetime-type-converter-test-sql`, and alter the config.py to your own specification. Create 
 a Pip virtual environment using `pipenv shell` and install the required libraries `pipenv install`, 
-and run the Makefile `make run`. <br><br>
+and run the Makefile `make translate`. <br><br>
 
 ## Type conversions
 There are cases in which you will want to convert one data type to another this can be done by adding flags onto the `make translate` command.
