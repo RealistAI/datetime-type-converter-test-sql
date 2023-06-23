@@ -68,7 +68,8 @@ and run the Makefile `make translate`. <br><br>
 
 ## Type conversions
 There are cases in which you will want to convert one data type to another this can be done by adding flags onto the `make translate` command.
-You can add flags in the folloing way `make translate flags="example_flag"`. This method gives more control to the user when deciding what they want converted. <br><br>
+You can add flags in the folloing way `make translate flags="--example_flag"`. This method gives more control to the user when deciding what they want converted. 
+Currently the type conversions we have implemented are `--timestamp_to_datetime`. <br><br>
 
 ## Configuration Options
 
