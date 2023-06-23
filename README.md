@@ -66,6 +66,10 @@ directory `cd bq_migration_automation_tool`, and alter the config.py to your own
 a Pip virtual environment using `pipenv shell` and install the required libraries `pipenv install`, 
 and run the Makefile `make run`. <br><br>
 
+## Type conversions
+There are cases in which you will want to convert one data type to another this can be done by adding flags onto the `make translate` command.
+You can add flags in the folloing way `make translate flags="example_flag"`. This method gives more control to the user when deciding what they want converted. <br><br>
+
 ## Configuration Options
 
 #### DWH_MIGRATION_TOOL_REPO
