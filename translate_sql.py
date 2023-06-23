@@ -75,6 +75,7 @@ def generate_object_mapping():
         data = object_csv.readlines()
         for line in data:
             data_dict = {}
+            line = line.strip()
             line_list = line.split(',')
             key = 0
             for i in line_list:
