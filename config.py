@@ -31,7 +31,7 @@ BQMS_INPUT_FOLDER = Path(BQMS_FOLDER, "input")
 # This is where the BQMS will write the transpilations to
 # NOTE: Everything in this directory will be deleted each time the BQMS is run
 BQMS_OUTPUT_FOLDER = Path(BQMS_FOLDER, "output")
-
+OBJECT_CSV_INPUT_FOLDER = Path(Path.cwd(), 'input_csv')
 
 # This is where the BQMS will look for the configuraitons
 # NOTE: Everything in this directory will be deleted each time the BQMS is run
@@ -45,4 +45,5 @@ BQMS_OBJECT_MAPPING_FILE = Path(BQMS_CONFIG_FOLDER , "object_mapping.json")
 
 DATETYPE_CONVERTER = Path(Path.cwd(), "template_configs", "timestamp-to-datetime.config.yaml")
 CASETYPE_CONVERTER = Path(Path.cwd(), "template_configs", "lowercase-to-uppercase.config.yaml")
-SQL_TO_TRANSLATE = Path(Path.cwd(), 'translate.sql')
+SQL_TO_TRANSLATE = Path(Path.cwd(), "translate.sql")
+OBJECT_CSV_FILE = Path(OBJECT_CSV_INPUT_FOLDER, "schema_map.csv")
