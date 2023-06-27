@@ -160,6 +160,9 @@ def main():
     generate_bqms_config()
     
     args_dict = parser.arg_parser()
+    
+    if os.path.isfile(config.TYPE_CONVERSION_CSV):
+        type_converter.generate_type_conversions_config()
 
     for key, value in args_dict.items():
         if key in "timestamp_to_datetime" and value is True:

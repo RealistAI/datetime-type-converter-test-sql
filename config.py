@@ -42,8 +42,9 @@ BQMS_CONFIG_FILE = Path(BQMS_CONFIG_FOLDER , "config.yaml")
 # This file will contain the object mapping created by the Translate SQL script
 BQMS_OBJECT_MAPPING_FILE = Path(BQMS_CONFIG_FOLDER , "object_mapping.json")
 
-
-DATETYPE_CONVERTER = Path(Path.cwd(), "template_configs", "timestamp-to-datetime.config.yaml")
-CASETYPE_CONVERTER = Path(Path.cwd(), "template_configs", "lowercase-to-uppercase.config.yaml")
+#INTEGER_TO_CHAR_CONVERTER = Path(Path.cwd(), "template_configs", "integer-to-char.config.yaml")
+#DATETYPE_CONVERTER = Path(Path.cwd(), "template_configs", "timestamp-to-datetime.config.yaml")
+#CASETYPE_CONVERTER = Path(Path.cwd(), "template_configs", "lowercase-to-uppercase.config.yaml")
 SQL_TO_TRANSLATE = Path(Path.cwd(), "translate.sql")
 OBJECT_CSV_FILE = Path(OBJECT_CSV_INPUT_FOLDER, "schema_map.csv")
+TYPE_CONVERSION_CSV = Path(OBJECT_CSV_INPUT_FOLDER, "type_conversions.csv")
