@@ -26,8 +26,8 @@ def generate_lowercase_to_uppercase_config():
         config_lines = []
         config_lines.append("type: object_rewriter")
         config_lines.append("attribute:")
-        config_lines.append("  case:")
-        config_lines.append("    all: UPPERCASE")
+        #config_lines.append("  case:")
+        #config_lines.append("    all: UPPERCASE")
         
         for line in data:
             line = line.strip()
@@ -35,11 +35,14 @@ def generate_lowercase_to_uppercase_config():
 
             for column in columns:
                 #regex = f"\\b{column}\\b"
-                config_lines.append("-")
-                config_lines.append("  match:")
-                config_lines.append(f'    attribute: "{column}"')
-                config_lines.append("  case: LOWER")
-                #config_lines.append("    all: UPPER")
+                config_lines.append("  -")
+                config_lines.append("    match:")
+                #config_lines.append('     schema: my_dataset')
+                config_lines.append(f'      attribute: {column}')
+                config_lines.append("    type:")
+                config_lines.append("      target: UPPERCASE")
+                #config_lines.append("    database: UPPERCASE")
+                #config_lines.append("        attribute: UPPERCASE")
 
         with open(Path(config.BQMS_INPUT_FOLDER, config_file_name), 'w+') \
             as config_file:
