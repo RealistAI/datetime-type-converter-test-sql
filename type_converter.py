@@ -20,6 +20,11 @@ def generate_timestamp_to_datetime_config(timezone: str):
         config_file.write('\n'.join(config_lines))
 
 def generate_lowercase_to_uppercase_config():
+    """
+    Generate a config required to read a CSV for column names to wrap in 'upper()' so they are treated as not case sensitive.
+    
+    The CSV is required to be placed in the input_csv folder and named 'columns.csv' in this iteration.
+    """
     with open(Path(config.COLUMN_CSV_FILE)) as csv_file:
         data = csv_file.readlines()
         config_file_name = f"column-case-converter.config.yaml"
