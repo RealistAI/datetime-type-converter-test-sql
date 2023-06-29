@@ -82,26 +82,23 @@ def generate_object_mapping():
                 data_dict.update({key: i})
                 key += 1
         
-            teradata_table = data_dict.get(0)
 		
-            teradata_dataset = data_dict.get(1)
+            teradata_dataset = data_dict.get(0)
 
-            bigquery_table = data_dict.get(2)
+            bigquery_database = data_dict.get(1)
 
-            bigquery_dataset = data_dict.get(3)
+            bigquery_dataset = data_dict.get(2)
 				
             name_map.append(
                     {
                         "source": {
                             "type": "RELATION",
                             "database": config.BQMS_DEFAULT_DATABASE,
-                            "schema": teradata_dataset,
-                            "relation": teradata_table
+                            "schema": teradata_dataset
                         },
                         "target": {
-                            "database": config.BQMS_DEFAULT_DATABASE,
-                            "schema": bigquery_dataset,
-                            "relation": bigquery_table
+                            "database": bigquery_database,
+                            "schema": bigquery_dataset
                         }
         
                     }

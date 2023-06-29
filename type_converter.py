@@ -25,6 +25,7 @@ def generate_lowercase_to_uppercase_config():
     
     The CSV is required to be placed in the input_csv folder and named 'columns.csv' in this iteration.
     """
+    """
     with open(Path(config.COLUMN_CSV_FILE)) as csv_file:
         data = csv_file.readlines()
         config_file_name = f"column-case-converter.config.yaml"
@@ -44,11 +45,12 @@ def generate_lowercase_to_uppercase_config():
                 config_lines.append("    match:")
                 #config_lines.append('     schema: my_dataset')
                 config_lines.append(f'      attribute: {column}')
-                config_lines.append("    type:")
-                config_lines.append("      target: UPPERCASE")
+                #config_lines.append("      type:")
+                #config_lines.append("        target: UPPERCASE")
                 #config_lines.append("    database: UPPERCASE")
                 #config_lines.append("        attribute: UPPERCASE")
 
         with open(Path(config.BQMS_INPUT_FOLDER, config_file_name), 'w+') \
             as config_file:
                 config_file.write('\n'.join(config_lines))
+    """
