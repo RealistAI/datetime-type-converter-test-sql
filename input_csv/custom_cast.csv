@@ -1,0 +1,2 @@
+michael-gilbert-dev/acme/employee/jd/parse_date('%Y%m%d', cast(? as string))/cast(format_date('%Y%m%d', ?) as int64)
+michael-gilbert-dev/acme/employee/eid/parse_date('%Y%m%d', cast(? as string))/cast(format_date('%Y%m%d', ?) as int64)

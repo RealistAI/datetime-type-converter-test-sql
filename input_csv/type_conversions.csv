@@ -1,2 +1,1 @@
-TIMESTAMP
-DATETIME
+my_dataset,my_table,TIMESTAMP,DATETIME
