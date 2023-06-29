@@ -163,12 +163,6 @@ def main():
     
     if os.path.isfile(config.TYPE_CONVERSION_CSV):
         type_converter.generate_type_conversions_config()
-
-    for key, value in args_dict.items():
-        if key in "timestamp_to_datetime" and value is True:
-            type_converter.generate_timestamp_to_datetime_config('America/Phoenix')
-        if key in "lowercase_to_uppercase" and value is True:
-            type_converter.generate_lowercase_to_uppercase_config() 
  
     shutil.copy(config.SQL_TO_TRANSLATE, Path(config.BQMS_INPUT_FOLDER, 'test.sql'))
     # Submit the job to the BQMS
