@@ -17,7 +17,7 @@ BQMS_GCS_BUCKET = "gs://dwh_preprocessed"
 
 # A setting that determines the default database for tables if one is not 
 # specified in the SQL
-BQMS_DEFAULT_DATABASE = "michael-gilbert-dev"
+BQMS_DEFAULT_DATABASE = "$pypl-edw"
 
 # Specifies whether or not the BQMS should clean up temp files after running
 BQMS_CLEAN_UP_TEMP_FILES = "True"

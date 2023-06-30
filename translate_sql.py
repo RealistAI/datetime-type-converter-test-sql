@@ -7,6 +7,7 @@ import argparse
 import parser
 import csv
 
+import post_process
 import config
 import utils
 import json
@@ -171,7 +172,10 @@ def main():
     shutil.copy(config.SQL_TO_TRANSLATE, Path(config.BQMS_INPUT_FOLDER, 'test.sql'))
     # Submit the job to the BQMS
     submit_job_to_bqms()
-
+    try:
+        post_process.replace_value()
+    except Exception as e:
+        print(e.args)
     # Perform the dry-runs
     #validate_sqls(client=bigquery_client, uc4_jobs=uc4_jobs,
     #              uc4_sql_dependencies=uc4_sql_dependencies)
