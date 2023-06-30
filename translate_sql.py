@@ -163,9 +163,6 @@ def main():
     
     if os.path.isfile(config.TYPE_CONVERSION_CSV):
         type_converter.generate_type_conversions_config()
-    
-    if os.path.isfile(config.CUSTOM_CAST_CSV):
-        type_converter.generate_custom_cast_config()
 
     shutil.copy(config.SQL_TO_TRANSLATE, Path(config.BQMS_INPUT_FOLDER, 'test.sql'))
     # Submit the job to the BQMS
