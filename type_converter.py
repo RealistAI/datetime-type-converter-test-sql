@@ -24,7 +24,7 @@ def generate_type_conversions_config():
         for rows in data:
             try:
                 rows = rows.strip()
-                lst = rows.split('/')
+                lst = rows.split('|')
                 tb = lst[0]
                 column = lst[1]
                 name = lst[2]
