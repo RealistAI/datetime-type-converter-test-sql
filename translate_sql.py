@@ -72,22 +72,15 @@ def generate_object_mapping():
 
     # Get the records from the mapping table
     with open(config.OBJECT_CSV_FILE, 'r') as object_csv:
-        data = object_csv.readlines()
+        data = csv.reader(object_csv, delimiter=',')
         for line in data:
-            data_dict = {}
-            line = line.strip()
-            line_list = line.split(',')
-            key = 0
-            for i in line_list:
-                data_dict.update({key: i})
-                key += 1
-        
+            assert len(line) == 3, f"The object mapper is expected to have 3 elements, but this row has {len(line)}:\n{line}"
 		
-            teradata_dataset = data_dict.get(0)
+            teradata_dataset = line[0]
 
-            bigquery_database = data_dict.get(1)
+            bigquery_database = line[1]
 
-            bigquery_dataset = data_dict.get(2)
+            bigquery_dataset = line[2]
 				
             name_map.append(
                     {
