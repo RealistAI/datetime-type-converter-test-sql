@@ -5,6 +5,7 @@ from typing import Tuple
 import uuid
 import argparse
 import parser
+import csv
 
 import config
 import utils
@@ -58,14 +59,50 @@ def generate_bqms_config():
         config_file.truncate(0)
         config_file.write('\n'.join(lines))
 
-
+        
 def generate_object_mapping():
     """
     Pull the mappings from the Teradata to BigQuery Mapping table in BigQuery
     and build the corresponding Object Mapping.
     """
-    with open(config.BQMS_OBJECT_MAPPING_FILE, 'w+') as file:
-        file.write('{}')
+
+    object_map = {
+    }
+    name_map = []
+
+    # Get the records from the mapping table
+    with open(config.OBJECT_CSV_FILE, 'r') as object_csv:
+        data = csv.reader(object_csv, delimiter=',')
+        for line in data:
+            assert len(line) == 3, f"The object mapper is expected to have 3 elements, but this row has {len(line)}:\n{line}"
+		
+            teradata_dataset = line[0]
+
+            bigquery_database = line[1]
+
+            bigquery_dataset = line[2]
+				
+            name_map.append(
+                    {
+                        "source": {
+                            "type": "SCHEMA",
+                            "database": config.BQMS_DEFAULT_DATABASE,
+                            "schema": teradata_dataset,
+                        },
+                        "target": {
+                            "database": bigquery_database,
+                            "schema": bigquery_dataset,
+                        }
+        
+                    }
+                )
+        object_csv.close()
+
+    object_map["name_map"] = name_map
+
+    # Write the config file to disk
+    with open(config.BQMS_OBJECT_MAPPING_FILE, 'w+') as mapping_file:
+        mapping_file.write(json.dumps(object_map, indent=4))
 
 
 def submit_job_to_bqms():
@@ -79,9 +116,9 @@ def submit_job_to_bqms():
     os.environ['BQMS_TRANSLATED_PATH'] = BQMS_TRANSLATED_PATH
     os.environ['BQMS_INPUT_PATH'] = str(config.BQMS_INPUT_FOLDER)
     os.environ['BQMS_CONFIG_PATH'] = str(config.BQMS_CONFIG_FILE)
-    #os.environ['BQMS_OBJECT_NAME_MAPPING_PATH'] = str(config.BQMS_OBJECT_MAPPING_FILE)
-    #os.system(f"python {Path(Path.cwd(), 'dwh-migration-tools/client/bqms_run/main.py')} --input {config.BQMS_INPUT_FOLDER} --output {config.BQMS_OUTPUT_FOLDER} --config {config.BQMS_CONFIG_FILE} -o {config.BQMS_OBJECT_MAPPING_FILE}")
-    os.system(f"python {Path(Path.cwd(), 'dwh-migration-tools/client/bqms_run/main.py')} --input {config.BQMS_INPUT_FOLDER} --output {config.BQMS_OUTPUT_FOLDER} --config {config.BQMS_CONFIG_FILE}")
+    os.environ['BQMS_OBJECT_NAME_MAPPING_PATH'] = str(config.BQMS_OBJECT_MAPPING_FILE)
+    os.system(f"python {Path(Path.cwd(), 'dwh-migration-tools/client/bqms_run/main.py')} --input {config.BQMS_INPUT_FOLDER} --output {config.BQMS_OUTPUT_FOLDER} --config {config.BQMS_CONFIG_FILE} -o {config.BQMS_OBJECT_MAPPING_FILE}")
+    #os.system(f"python {Path(Path.cwd(), 'dwh-migration-tools/client/bqms_run/main.py')} --input {config.BQMS_INPUT_FOLDER} --output {config.BQMS_OUTPUT_FOLDER} --config {config.BQMS_CONFIG_FILE}")
 
     # Download all of the transpiled files to the output forder
     os.system(f'gsutil -m -o "GSUtil:parallel_process_count=1" cp -r {BQMS_TRANSLATED_PATH} {config.BQMS_OUTPUT_FOLDER}')
@@ -113,13 +150,14 @@ def main():
     generate_bqms_config()
     
     args_dict = parser.arg_parser()
+    
+    if os.path.isfile(config.COLUMN_CSV_FILE):
+        type_converter.generate_lowercase_to_uppercase_config()
 
     for key, value in args_dict.items():
         if key in "timestamp_to_datetime" and value is True:
             type_converter.generate_timestamp_to_datetime_config('America/Phoenix')
-        if key in "lowercase_to_uppercase" and value is True:
-            type_converter.generate_lowercase_to_uppercase_config() 
- 
+    
     shutil.copy(config.SQL_TO_TRANSLATE, Path(config.BQMS_INPUT_FOLDER, 'test.sql'))
     # Submit the job to the BQMS
     submit_job_to_bqms()
