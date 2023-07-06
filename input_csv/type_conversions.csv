@@ -1,0 +1,2 @@
+acme,employee,jd,INT,DATE,"parse_date('%Y%m%d', cast(? as string))","cast(format_date('%Y%m%d', ?) as int64)"
+acme,employee,name,VARCHAR,BIGINT,,
