@@ -1,17 +1,24 @@
 CREATE TABLE EMPLOYEE (
-	FIRSTNAME VARCHAR(100) NOT CASESPECIFIC,
-	LASTNAME VARCHAR(100) NOT CASESPECIFIC,
-	DOB DATE
-);
+	EID INT,
+	boss varchar(100),
+	name char(10),
+	jd int,
+	lastname char(10),
+	firstname char(10)
+	)
+	;
 
-CREATE TABLE PROJECT (
-	PROJECTNAME VARCHAR(100),
-	EMPLOYEEFIRSTNAME VARCHAR(100) NOT CASESPECIFIC
-);
+INSERT into employee select 
+	42, 
+	'Matthias Gilbert', 
+	'Acme', 
+	80085,
+	'Huizinga', 'Gregory'
+	;
 
-SELECT
-	UPPER(FIRSTNAME),
-	DOB
-	FROM EMPLOYEE e
-	JOIN PROJECT p
-		on e.FIRSTNAME = p.EMPLOYEEFIRSTNAME;
+SELECT eid, 
+	boss, 
+	name, 
+	jd 
+	from employee e
+	WHERE jd > 80000
