@@ -92,13 +92,13 @@ def generate_object_mapping():
             name_map.append(
                     {
                         "source": {
-                            "type": "RELATION",
+                            "type": "SCHEMA",
                             "database": config.BQMS_DEFAULT_DATABASE,
-                            "schema": teradata_dataset
+                            "schema": teradata_dataset,
                         },
                         "target": {
                             "database": bigquery_database,
-                            "schema": bigquery_dataset
+                            "schema": bigquery_dataset,
                         }
         
                     }
@@ -123,9 +123,9 @@ def submit_job_to_bqms():
     os.environ['BQMS_TRANSLATED_PATH'] = BQMS_TRANSLATED_PATH
     os.environ['BQMS_INPUT_PATH'] = str(config.BQMS_INPUT_FOLDER)
     os.environ['BQMS_CONFIG_PATH'] = str(config.BQMS_CONFIG_FILE)
-    #os.environ['BQMS_OBJECT_NAME_MAPPING_PATH'] = str(config.BQMS_OBJECT_MAPPING_FILE)
-    #os.system(f"python {Path(Path.cwd(), 'dwh-migration-tools/client/bqms_run/main.py')} --input {config.BQMS_INPUT_FOLDER} --output {config.BQMS_OUTPUT_FOLDER} --config {config.BQMS_CONFIG_FILE} -o {config.BQMS_OBJECT_MAPPING_FILE}")
-    os.system(f"python {Path(Path.cwd(), 'dwh-migration-tools/client/bqms_run/main.py')} --input {config.BQMS_INPUT_FOLDER} --output {config.BQMS_OUTPUT_FOLDER} --config {config.BQMS_CONFIG_FILE}")
+    os.environ['BQMS_OBJECT_NAME_MAPPING_PATH'] = str(config.BQMS_OBJECT_MAPPING_FILE)
+    os.system(f"python {Path(Path.cwd(), 'dwh-migration-tools/client/bqms_run/main.py')} --input {config.BQMS_INPUT_FOLDER} --output {config.BQMS_OUTPUT_FOLDER} --config {config.BQMS_CONFIG_FILE} -o {config.BQMS_OBJECT_MAPPING_FILE}")
+    #os.system(f"python {Path(Path.cwd(), 'dwh-migration-tools/client/bqms_run/main.py')} --input {config.BQMS_INPUT_FOLDER} --output {config.BQMS_OUTPUT_FOLDER} --config {config.BQMS_CONFIG_FILE}")
 
     # Download all of the transpiled files to the output forder
     os.system(f'gsutil -m -o "GSUtil:parallel_process_count=1" cp -r {BQMS_TRANSLATED_PATH} {config.BQMS_OUTPUT_FOLDER}')
