@@ -52,3 +52,15 @@ def generate_lowercase_to_uppercase_config():
         with open(Path(config.BQMS_INPUT_FOLDER, config_file_name), 'w+') \
             as config_file:
                 config_file.write('\n'.join(config_lines))
+
+def generate_char_to_varchar_config():
+    config_file_name = "char-to-varchar.config.yaml"
+    config_lines = []
+    config_lines.append("type: experimental_type_converter")
+    config_lines.append("global:")
+    config_lines.append("  type_convert:")
+    config_lines.append("    CHAR: VARCHAR")
+
+    with open(Path(config.BQMS_INPUT_FOLDER, config_file_name), 'w+') \
+        as config_file:
+            config_file.write('\n'.join(config_lines))
