@@ -5,7 +5,9 @@ from typing import Tuple
 import uuid
 import argparse
 import parser
+import csv
 
+import post_process
 import config
 import utils
 import json
@@ -58,14 +60,60 @@ def generate_bqms_config():
         config_file.truncate(0)
         config_file.write('\n'.join(lines))
 
-
+        
 def generate_object_mapping():
     """
     Pull the mappings from the Teradata to BigQuery Mapping table in BigQuery
     and build the corresponding Object Mapping.
     """
-    with open(config.BQMS_OBJECT_MAPPING_FILE, 'w+') as file:
-        file.write('{}')
+
+    object_map = {
+    }
+    name_map = []
+
+    # Get the records from the mapping table
+    with open(config.OBJECT_CSV_FILE, 'r') as object_csv:
+        data = object_csv.readlines()
+        for line in data:
+            data_dict = {}
+            line = line.strip()
+            line_list = line.split(',')
+            key = 0
+            for i in line_list:
+                data_dict.update({key: i})
+                key += 1
+        
+            teradata_table = data_dict.get(0)
+		
+            teradata_dataset = data_dict.get(1)
+
+            bigquery_table = data_dict.get(2)
+
+            bigquery_dataset = data_dict.get(3)
+				
+            name_map.append(
+                    {
+                        "source": {
+                            "type": "RELATION",
+                            "database": config.BQMS_DEFAULT_DATABASE,
+                            "schema": teradata_dataset,
+                            "relation": teradata_table
+                        },
+                        "target": {
+                            "database": config.BQMS_DEFAULT_DATABASE,
+                            "schema": bigquery_dataset,
+                            "relation": bigquery_table
+                        }
+        
+                    }
+                )
+        object_csv.close()
+
+    object_map["name_map"] = name_map
+
+    # Write the config file to disk
+    with open(config.BQMS_OBJECT_MAPPING_FILE, 'w+') as mapping_file:
+        mapping_file.write(json.dumps(object_map, indent=4))
 
 
 def submit_job_to_bqms():
@@ -113,17 +161,21 @@ def main():
     generate_bqms_config()
     
     args_dict = parser.arg_parser()
+    
+    if os.path.isfile(config.COLUMN_CSV_FILE):
+        type_converter.generate_lowercase_to_uppercase_config()
 
     for key, value in args_dict.items():
         if key in "timestamp_to_datetime" and value is True:
             type_converter.generate_timestamp_to_datetime_config('America/Phoenix')
-        if key in "lowercase_to_uppercase" and value is True:
-            type_converter.generate_lowercase_to_uppercase_config() 
- 
+    
     shutil.copy(config.SQL_TO_TRANSLATE, Path(config.BQMS_INPUT_FOLDER, 'test.sql'))
     # Submit the job to the BQMS
     submit_job_to_bqms()
-
+    try:
+        post_process.replace_value()
+    except Exception as e:
+        print(e.args)
     # Perform the dry-runs
     #validate_sqls(client=bigquery_client, uc4_jobs=uc4_jobs,
     #              uc4_sql_dependencies=uc4_sql_dependencies)
