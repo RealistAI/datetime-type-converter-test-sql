@@ -32,6 +32,7 @@ BQMS_INPUT_FOLDER = Path(BQMS_FOLDER, "input")
 # NOTE: Everything in this directory will be deleted each time the BQMS is run
 BQMS_OUTPUT_FOLDER = Path(BQMS_FOLDER, "output")
 OBJECT_CSV_INPUT_FOLDER = Path(Path.cwd(), 'input_csv')
+PARTITION_CSV = Path(OBJECT_CSV_INPUT_FOLDER, "partitions.csv")
 
 # This is where the BQMS will look for the configuraitons
 # NOTE: Everything in this directory will be deleted each time the BQMS is run
